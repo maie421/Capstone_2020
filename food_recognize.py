@@ -70,7 +70,7 @@ def recognize_food(img_path, list_foods):
             # print(desc, 'score: ', score)
 
             # Put text license plate number to image
-	voice.speech("%s가 있습니다." % desc.upper())
+	    voice.speech("%s가 있습니다." % desc.upper())
             # Get first fruit only
             break
 
