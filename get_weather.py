@@ -35,13 +35,13 @@ def main():
     voice.speech("어디의 날씨를 알려드릴까요?")
     address = voice.get_text_from_voice()
 
-    coord = map.get_coord_by_address(address)
-    if coord == None:
+    coord = map.get_coord_by_address(address) #존재하는 도시인지 체크
+    if coord == None: #지역이 없을경우
         voice.speech("%s을 찾지 못했습니다." % address)
     else:
-        weather_info = get_weather_by_coord(coord[0], coord[1])
+        weather_info = get_weather_by_coord(coord[0], coord[1]) # 경도와 위도 정보 가져오기
 
-        response_text = create_weather_text(weather_info, address)
+        response_text = create_weather_text(weather_info, address) #weater_info 온도,습도 주소 말하기
         voice.speech(response_text)
 
 
