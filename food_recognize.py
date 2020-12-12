@@ -32,49 +32,42 @@ def load_food_name(food_type):
 def recognize_food(img_path, list_foods):
     start_time = datetime.now()
 
-    # Read image with opencv
+    # opencv로 이미지 읽기
     img = cv2.imread(img_path)
 
-    # Get image size
+    # 이미지 크기 가져오기
     height, width = img.shape[:2]
 
-    # Scale image
+    # 이미지 축적
     img = cv2.resize(img, (800, int((height * 800) / width)))
 
-    # Save the image to temp file
+    # 임시 파일에 이미지 저장
     cv2.imwrite(SOURCE_PATH + "output.jpg", img)
 
-    # Create new img path for google vision
+    # google vision에 대한 새로운 img 경로 만들기
     img_path = SOURCE_PATH + "output.jpg"
 
-    # Create google vision client
+    # Google 비전 클라이언트 만들기
     client = vision.ImageAnnotatorClient()
 
-    # Read image file
+    # 이미지 파일 읽기
     with io.open(img_path, 'rb') as image_file:
         content = image_file.read()
 
     image = vision.types.Image(content=content)
 
-    # Recognize text
     response = client.label_detection(image=image)
     labels = response.label_annotations
 
     for label in labels:
-        # if len(text.description) == 10:
         desc = label.description.lower()
         score = round(label.score, 2)
-        print("label: ", desc, "  score: ", score)
+        print("label: ", desc, "  score: ", score) #과일이름 정확도
         if (desc in list_foods):
-            # score = round(label.score, 3)
-            # print(desc, 'score: ', score)
 
-            # Put text license plate number to image
-	    voice.speech("%s가 있습니다." % desc.upper())
+	    voice.speech("%s가 있습니다." % desc.upper()) #정확도 높은 순으로 과일이름 출력
             # Get first fruit only
             break
-
-    print('Total time: {}'.format(datetime.now() - start_time))
 
 
 print('---------- Start FOOD Recognition --------')
